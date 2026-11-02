@@ -1,0 +1,62 @@
+{
+  "name": "laziness-jamstack",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#/*": "./src/*"
+  },
+  "scripts": {
+    "dev": "vite dev --port 3000",
+    "build": "bun run i18n:extract && vite build",
+    "preview": "vite preview",
+    "typecheck": "content-collections build && tsc --noEmit",
+    "lint": "biome lint",
+    "check": "biome check",
+    "check:fix": "biome check --write",
+    "i18n:extract": "lingui extract --clean",
+    "i18n:check": "lingui extract --clean && lingui compile --strict",
+    "validate:cms": "bun validate.js",
+    "deploy:cloudflare": "bun run build && bunx wrangler@4.151.3 deploy",
+    "test": "bun test src",
+    "verify": "bun run typecheck && bun run check && bun run i18n:check && bun run validate:cms && bun test src && bun run build"
+  },
+  "dependencies": {
+    "@content-collections/core": "^0.15.3",
+    "@content-collections/markdown": "^0.1.4",
+    "@content-collections/vite": "^0.3.1",
+    "@lingui/core": "^6.10.0",
+    "@lingui/format-json": "^6.10.0",
+    "@lingui/react": "^6.10.0",
+    "@lingui/vite-plugin": "^6.10.0",
+    "@sourceking/tanstack-lingui": "^0.1.2",
+    "@tailwindcss/vite": "^4.3.3",
+    "@tanstack/react-router": "1.170.45",
+    "@tanstack/react-start": "1.169.3",
+    "@tanstack/start-static-server-functions": "1.167.43",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "tailwindcss": "^4.3.3",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.5",
+    "@content-collections/cli": "^0.1.9",
+    "@lingui/cli": "^6.10.0",
+    "@rolldown/plugin-babel": "^0.2.4",
+    "@types/bun": "1.4.3",
+    "@types/node": "^22.20.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "babel-plugin-react-compiler": "^1.0.0",
+    "rehype-sanitize": "^6.0.0",
+    "typescript": "^6.0.3",
+    "vite": "^8.3.5",
+    "yaml": "^2.9.1"
+  },
+  "trustedDependencies": [
+    "esbuild"
+  ]
+}

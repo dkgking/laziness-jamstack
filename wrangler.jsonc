@@ -1,0 +1,12 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	// Static assets only: no Worker code runs. `bun run deploy:cloudflare`, or
+	// Cloudflare Workers Builds with build command `bun run build`.
+	"name": "laziness-jamstack",
+	"compatibility_date": "2026-10-01",
+	"assets": {
+		"directory": "./dist/client",
+		"html_handling": "auto-trailing-slash",
+		"not_found_handling": "404-page"
+	}
+}

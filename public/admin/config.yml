@@ -1,0 +1,76 @@
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms@0.213.5/schema/sveltia-cms.json
+backend:
+  name: github
+  repo: OWNER/REPO # TODO: set your GitHub repository (owner/repo)
+  branch: main
+  # Sign in with a GitHub personal access token ("Sign in with token"). For an
+  # OAuth button, deploy an external proxy (sveltia-cms-auth) and set its
+  # address as base_url here: see .claude/skills/sveltia-cms/SKILL.md.
+  commit_messages:
+    openAuthoring: '{{message}} (by {{author-login}})'
+
+app_title: Site Admin
+publish_mode: editorial_workflow
+media_folder: public/uploads
+public_folder: /uploads
+logo:
+  src: /app-icon.svg
+  show_in_header: true
+
+slug:
+  encoding: unicode
+  clean_accents: true
+  sanitize_replacement: "-"
+  trim: true
+  lowercase: true
+  timezone: utc
+
+collections:
+  - name: "authors"
+    label: "Authors"
+    icon: "person"
+    label_singular: "Author"
+    description: "Authors collections"
+    folder: "content/authors"
+    slug: "{{slug}}"
+    create: true
+    extension: yaml
+    format: yaml
+    editor:
+      preview: false
+    fields:
+      - { label: "Name", name: "name", widget: "string"}
+      - { label: "Avatar", name: "avatar", widget: "image", required: false }
+      - { label: "Bio", name: "bio", widget: "text", required: false }
+      - { label: "Email", name: "email", widget: "string", type: "email", required: false }
+      - { label: "Website", name: "website", widget: "string", type: "url", required: false, hint: "Full URL, e.g. https://example.com" }
+      - { label: "Twitter", name: "twitter", widget: "string", type: "url", required: false, hint: "Full URL, e.g. https://x.com/handle" }
+      - { label: "GitHub", name: "github", widget: "string", type: "url", required: false, hint: "Full URL, e.g. https://github.com/handle" }
+
+  - name: "posts"
+    label: "Posts"
+    icon: "article"
+    label_singular: "Post"
+    description: "Blog posts: content/posts/<slug>.md"
+    folder: "content/posts"
+    slug: "{{slug}}"
+    create: true
+    extension: md
+    format: frontmatter
+    sortable_fields: [date, title]
+    summary: "{{title}} — {{date | date('YYYY-MM-DD')}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Summary", name: "summary", widget: "text", required: false }
+      # Saved in UTC with a trailing Z so builds do not depend on the machine timezone.
+      - { label: "Date", name: "date", widget: "datetime", output_utc: true }
+      - label: "Author"
+        name: "author"
+        widget: "relation"
+        collection: "authors"
+        value_field: "{{slug}}"
+        search_fields: ["name"]
+        display_fields: ["name"]
+      - { label: "Cover", name: "cover", widget: "image", required: false }
+      - { label: "Draft", name: "draft", widget: "boolean", default: false }
+      - { label: "Body", name: "body", widget: "markdown" }

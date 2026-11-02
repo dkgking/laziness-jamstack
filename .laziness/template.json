@@ -1,0 +1,13 @@
+{
+	"name": "Jamstack blog",
+	"description": "A static blog and content site: TanStack Start prerendered to HTML, Markdown posts with Content Collections, Sveltia CMS at /admin, Lingui for languages. Deploys to Cloudflare, Vercel, Netlify, or GitHub Pages.",
+	"image": ".laziness/cover.png",
+	"tags": ["blog", "cms", "static"],
+	"prompts": [
+		"Turn this into my personal blog with an About page",
+		"Add a Projects collection with a projects page",
+		"Make the site English and Vietnamese",
+		"Give it a dark, minimal look"
+	],
+	"locale": "en"
+}

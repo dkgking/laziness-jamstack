@@ -1,0 +1,6 @@
+{
+	"kind": "static",
+	"install": "bun install",
+	"build": "bun run build",
+	"dir": "dist/client"
+}

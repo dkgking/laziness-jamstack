@@ -1,0 +1,4 @@
+# Static site: Netlify serves dist/client (and 404.html for unknown paths).
+[build]
+  command = "bun run build"
+  publish = "dist/client"
