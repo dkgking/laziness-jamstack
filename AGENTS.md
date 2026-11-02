@@ -12,6 +12,10 @@ A **static** content site (blog, portfolio, marketing pages):
 - **Lingui** for UI text, with the locale in the URL (`@sourceking/tanstack-lingui`). The site is **English only** until the user asks for other languages.
 - **Tailwind CSS v4**, **Biome**, **bun**.
 
+## The example is not the site
+
+The Hello World post, the Jane Doe author, and the demo home page text only show the patterns. **In the first round that builds the user's site, remove them** with `.claude/skills/remove-example/SKILL.md`: keep the blog code and drop the samples when the user wants a blog, or remove the blog entirely (posts, authors, `/posts`, their CMS collections) when the site has none. Never hand back a site that still has template pages, posts, links or text.
+
 ## Working in Web Studio
 
 - Work in `/workspace`, on this one project. Never start a second project beside it, and never start the app over.
@@ -91,6 +95,7 @@ Step-by-step guides in `.claude/skills/` (also at `.agents/skills/`, the same fo
 
 | Task | Guide |
 |---|---|
+| Remove the sample content, or the whole blog (first round) | `.claude/skills/remove-example/SKILL.md` |
 | Add a page / route | `.claude/skills/add-page/SKILL.md` |
 | Add a content collection (CMS + schema + server fn) | `.claude/skills/add-collection/SKILL.md` |
 | Add or remove a language | `.claude/skills/add-locale/SKILL.md` |

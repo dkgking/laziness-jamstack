@@ -1,4 +1,4 @@
-# Jamstack blog
+# Jamstack site
 
 A static, multilingual-ready content site: **TanStack Start** prerendered to HTML, Markdown posts with **Content Collections**, **Sveltia CMS** at `/admin`, **Lingui** for UI text, **Tailwind CSS v4**, **Biome**, **bun**.
 
