@@ -22,12 +22,14 @@ The Hello World post, the Jane Doe author, and the demo home page text only show
 - Never commit, push, or change git history: Studio records each round itself.
 - The preview is the built site: `.laziness/preview.json` runs `bun install`, `bun run build`, and serves `dist/client`. A change shows once it builds.
 - Keep `bun run build` working: a page that fails to prerender fails the build (`failOnError`).
+- The sandbox's memory is small and shared by everything running in it: you, the build, and any server. Run one heavy command at a time (install, typecheck, test, build, verify), never in the background or side by side.
+- Do not start `bun dev` or `bun run preview`: Studio builds and shows the site itself. If you started one, stop it before you run `verify` or `build`.
 
 ## Commands
 
 | Task | Command |
 |---|---|
-| Dev server (port 3000) | `bun dev` |
+| Dev server (port 3000; not in Web Studio) | `bun dev` |
 | Type check (also generates content types) | `bun run typecheck` |
 | Lint + format check | `bun run check` (`bun run check:fix` to fix) |
 | Extract UI strings into catalogs | `bun run i18n:extract` |

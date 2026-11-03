@@ -88,4 +88,4 @@ const navItems = [
 
 1. Follow the `i18n-lingui` skill: every visible string goes through `i18n._("...")`. Run `bun run i18n:extract`, then fill the new keys in every `src/locales/<locale>.json` except `en.json`.
 2. `bun run verify`
-3. Optional: `bun dev`, then open `/<path>` (and `/<locale>/<path>` if the site has other languages). A page no link reaches is not prerendered: link it from the nav or a page, or add it to `pages` in `vite.config.ts`.
+3. Check (`verify` built the site) that `dist/client/<path>.html` (and `dist/client/<locale>/<path>.html` if the site has other languages) was written. A page no link reaches is not prerendered: link it from the nav or a page, or add it to `pages` in `vite.config.ts`.
