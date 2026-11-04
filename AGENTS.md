@@ -24,6 +24,8 @@ The Hello World post, the Jane Doe author, and the demo home page text only show
 - Keep `bun run build` working: a page that fails to prerender fails the build (`failOnError`).
 - The sandbox's memory is small and shared by everything running in it: you, the build, and any server. Run one heavy command at a time (install, typecheck, test, build, verify), never in the background or side by side.
 - Never start another dev server (`bun dev`, `vite dev`) or `bun run preview`, and never wait for one: Studio runs the live one and builds and shows the site itself. If you started one, stop it before you run `verify` or `build`.
+- Never open a browser (Playwright, Chromium) or serve `dist/client` yourself to look at the site: Studio opens it when you end, takes its screenshots, and tells you what failed on the page.
+- `/workspace/.cache` holds the package managers' caches: never format, lint, search, or delete it.
 
 ## Commands
 
