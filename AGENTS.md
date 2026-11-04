@@ -20,10 +20,10 @@ The Hello World post, the Jane Doe author, and the demo home page text only show
 
 - Work in `/workspace`, on this one project. Never start a second project beside it, and never start the app over.
 - Never commit, push, or change git history: Studio records each round itself.
-- The preview is the built site: `.laziness/preview.json` runs `bun install`, `bun run build`, and serves `dist/client`. A change shows once it builds.
+- The preview is the built site: `.laziness/preview.json` runs `bun install`, `bun run build`, and serves `dist/client` once you end. While you work, Studio may also run its `live` dev server on `$PORT` (on plans with room for it), so the page follows your edits as you save them; the built site is still what the user gets at the end.
 - Keep `bun run build` working: a page that fails to prerender fails the build (`failOnError`).
 - The sandbox's memory is small and shared by everything running in it: you, the build, and any server. Run one heavy command at a time (install, typecheck, test, build, verify), never in the background or side by side.
-- Do not start `bun dev` or `bun run preview`: Studio builds and shows the site itself. If you started one, stop it before you run `verify` or `build`.
+- Never start another dev server (`bun dev`, `vite dev`) or `bun run preview`, and never wait for one: Studio runs the live one and builds and shows the site itself. If you started one, stop it before you run `verify` or `build`.
 
 ## Commands
 

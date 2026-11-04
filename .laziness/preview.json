@@ -2,5 +2,8 @@
 	"kind": "static",
 	"install": "bun install",
 	"build": "bun run build",
-	"dir": "dist/client"
+	"dir": "dist/client",
+	"live": {
+		"start": "node_modules/.bin/vite dev --host 0.0.0.0 --port $PORT --strictPort"
+	}
 }
