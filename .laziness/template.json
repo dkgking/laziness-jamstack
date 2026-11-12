@@ -9,5 +9,28 @@
 		"A landing page for my coffee shop with the menu editable in the CMS",
 		"A company blog in English and Vietnamese"
 	],
-	"locale": "en"
+	"locale": "en",
+	"setup": {
+		"questions": [
+			{
+				"id": "locales",
+				"header": "Languages",
+				"question": "Which languages should the site have?",
+				"multiSelect": true,
+				"options": [
+					{ "label": "English only", "description": "Add more later by asking" },
+					{ "label": "Vietnamese", "description": "vi" },
+					{ "label": "Japanese", "description": "ja" },
+					{ "label": "Chinese", "description": "zh" }
+				]
+			},
+			{
+				"id": "repo",
+				"header": "Repository",
+				"question": "Which GitHub repository will the site's CMS write to (owner/name)? Leave it empty to set it after the first publish.",
+				"optional": true
+			}
+		],
+		"instructions": "`locales`: the site starts in English. For every other language picked or typed, add it with the add-locale skill (two-letter codes only: vi, ja, zh, ...); for \"English only\" change nothing. `repo`: when given as owner/name, set it as `backend.repo` in public/admin/config.yml and run `bun run validate:cms`; when there is no answer, leave that file as it is."
+	}
 }
