@@ -31,6 +31,8 @@ const config = defineConfig({
 					path: code === defaultLocale ? "/" : `/${code}`,
 				})),
 				{ path: "/sitemap.xml" },
+				{ path: "/robots.txt" },
+				{ path: "/site.webmanifest" },
 			],
 			prerender: {
 				enabled: true,

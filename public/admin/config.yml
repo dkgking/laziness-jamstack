@@ -56,12 +56,16 @@ collections:
             widget: "object"
             fields:
               - { label: "Title", name: "title", widget: "string" }
+          - { label: "Search title", name: "seo_title", widget: "string", required: false, hint: "Shown by search engines and link previews in place of the title" }
+          - { label: "Search description", name: "seo_description", widget: "text", required: false, hint: "One or two sentences for search results and link previews" }
       - name: "posts"
         label: "Posts"
         file: "content/pages/posts.yaml"
         fields:
           - { label: "Title", name: "title", widget: "string" }
           - { label: "Intro", name: "intro", widget: "text", required: false }
+          - { label: "Search title", name: "seo_title", widget: "string", required: false, hint: "Shown by search engines and link previews in place of the title" }
+          - { label: "Search description", name: "seo_description", widget: "text", required: false, hint: "One or two sentences for search results and link previews" }
 
   - name: "settings"
     label: "Settings"
@@ -74,6 +78,21 @@ collections:
         label: "Site"
         file: "content/settings/site.yaml"
         fields:
+          - { label: "Site name", name: "name", widget: "string" }
+          - { label: "Description", name: "description", widget: "text", required: false, hint: "What the site is, for search results and link previews" }
+          - { label: "Share picture", name: "image", widget: "image", required: false, hint: "Shown by a link to a page that has no picture of its own" }
+          - { label: "X handle", name: "twitter", widget: "string", required: false, hint: "With its @, e.g. @example" }
+          - { label: "Google verification", name: "google_verification", widget: "string", required: false, hint: "The code from Google Search Console" }
+          - { label: "Theme color", name: "theme_color", widget: "string", required: false, hint: "A color such as #0f172a, used by browsers around the page" }
+          - label: "Organization"
+            name: "organization"
+            widget: "object"
+            hint: "Who publishes the site, for search engines"
+            fields:
+              - { label: "Name", name: "name", widget: "string", required: false }
+              - { label: "Website", name: "url", widget: "string", type: "url", required: false }
+              - { label: "Logo", name: "logo", widget: "image", required: false }
+              - { label: "Email", name: "email", widget: "string", type: "email", required: false }
           - label: "Navigation"
             name: "nav"
             widget: "list"
@@ -81,6 +100,14 @@ collections:
             fields:
               - { label: "Label", name: "label", widget: "string" }
               - { label: "Path", name: "to", widget: "string", hint: "A path on this site, e.g. /posts" }
+          - { label: "Footer note", name: "footer_note", widget: "string", required: false, hint: "A line under the footer links, e.g. the copyright" }
+          - label: "Footer links"
+            name: "footer_links"
+            widget: "list"
+            summary: "{{label}}"
+            fields:
+              - { label: "Label", name: "label", widget: "string" }
+              - { label: "Path", name: "to", widget: "string", hint: "A page of this site by its route, e.g. /page/privacy (the site shows its public address)" }
 
   - name: "authors"
     label: "Authors"
@@ -129,4 +156,26 @@ collections:
         display_fields: ["name"]
       - { label: "Cover", name: "cover", widget: "image", required: false }
       - { label: "Draft", name: "draft", widget: "boolean", default: false }
+      - { label: "Featured", name: "featured", widget: "boolean", default: false, hint: "Listed first on the home page" }
+      - { label: "Search title", name: "seo_title", widget: "string", required: false, hint: "Shown by search engines and link previews in place of the title" }
+      - { label: "Search description", name: "seo_description", widget: "text", required: false, hint: "In place of the summary, for search results and link previews" }
+      - { label: "Share picture", name: "og_image", widget: "image", required: false, hint: "In place of the cover, for link previews" }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "text-pages"
+    label: "Text pages"
+    icon: "description"
+    label_singular: "Text page"
+    description: "A title and a text (privacy, terms): content/text-pages/<slug>.md, shown at /page/<slug>"
+    folder: "content/text-pages"
+    slug: "{{slug}}"
+    create: true
+    extension: md
+    format: frontmatter
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Summary", name: "summary", widget: "text", required: false }
+      - { label: "Updated", name: "updated", widget: "datetime", output_utc: true }
+      - { label: "Search title", name: "seo_title", widget: "string", required: false, hint: "Shown by search engines and link previews in place of the title" }
+      - { label: "Search description", name: "seo_description", widget: "text", required: false, hint: "In place of the summary, for search results and link previews" }
       - { label: "Body", name: "body", widget: "markdown" }

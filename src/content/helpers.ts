@@ -13,6 +13,16 @@ export const optionalUrl = () =>
 export const optionalEmail = () =>
 	z.email().or(z.literal("")).optional().transform(emptyToUndefined);
 
+/**
+ * What a page may say to search engines and link previews in place of its
+ * own title and first words. Kept as plain fields beside the page's others
+ * (never an object): Web Studio's Edit form writes plain fields only.
+ */
+export const seoFields = {
+	seo_title: optionalString(),
+	seo_description: optionalString(),
+};
+
 // Date-times without an offset are read as UTC, so the result does not depend on
 // the timezone of the machine running the build. Stored as ISO strings.
 const dateTime = /^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}/;

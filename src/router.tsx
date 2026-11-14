@@ -4,6 +4,7 @@ import { getGlobalStartContext } from "@tanstack/react-start";
 import { ErrorPage } from "./components/ErrorPage";
 import { NotFound } from "./components/NotFound";
 import { routerWithI18n } from "./libs/i18n";
+import { urlRewrite } from "./libs/rewrite";
 import { routeTree } from "./routeTree.gen";
 
 export function getRouter() {
@@ -17,6 +18,8 @@ export function getRouter() {
 		defaultPreload: "intent",
 		defaultNotFoundComponent: NotFound,
 		defaultErrorComponent: ErrorPage,
+		// A page's public address may differ from its route: src/libs/rewrite.ts.
+		rewrite: urlRewrite,
 	});
 
 	return routerWithI18n(router, i18n);

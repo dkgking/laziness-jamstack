@@ -3,7 +3,9 @@ import { compileMarkdown } from "@content-collections/markdown";
 import rehypeSanitize from "rehype-sanitize";
 import { z } from "zod";
 import { authors } from "./authors";
-import { isoDate, optionalString, parseLocalePath } from "./helpers";
+import { isoDate, optionalString, parseLocalePath, seoFields } from "./helpers";
+import { readingMinutes } from "./reading-time";
+import { headingsOf, rehypeHeadings } from "./rehype-headings";
 import { rehypeYoutube } from "./rehype-youtube";
 
 // content/posts/<slug>.md while the site is English only. With more locales
@@ -21,6 +23,9 @@ export const posts = defineCollection({
 		author: z.string(),
 		cover: optionalString(),
 		draft: z.boolean().default(false),
+		featured: z.boolean().default(false),
+		...seoFields,
+		og_image: optionalString(),
 		content: z.string(),
 	}),
 	transform: async (doc, context) => {
@@ -43,14 +48,17 @@ export const posts = defineCollection({
 
 		// Sanitize: CMS editors (or PRs) must not be able to inject javascript: links etc.
 		// The YouTube embed is added after sanitizing, from a checked video id.
+		// Headings get their ids after sanitizing too.
 		const html = await compileMarkdown(context, doc, {
-			rehypePlugins: [rehypeSanitize, rehypeYoutube],
+			rehypePlugins: [rehypeSanitize, rehypeYoutube, rehypeHeadings],
 		});
-		const { content: _content, author: _authorSlug, ...rest } = doc;
+		const { content, author: _authorSlug, ...rest } = doc;
 		return {
 			...rest,
 			...parsed,
 			html,
+			headings: headingsOf(html),
+			readingMinutes: readingMinutes(content),
 			author: {
 				slug: author._meta.path,
 				name: author.name,
