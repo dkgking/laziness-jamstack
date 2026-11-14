@@ -1,6 +1,12 @@
 import { defineCollection } from "@content-collections/core";
 import { z } from "zod";
-import { optionalString, parseLocalePath } from "./helpers";
+import {
+	optionalEmail,
+	optionalString,
+	optionalUrl,
+	parseLocalePath,
+	seoFields,
+} from "./helpers";
 
 // A page's words live in one YAML file, edited in the CMS under Pages:
 // content/pages/<page>.yaml while the site is English only, and
@@ -21,13 +27,30 @@ const localeOf = (doc: { _meta: { path: string; filePath: string } }) => {
 	return parsed.locale;
 };
 
+/** A link of the navigation or the footer: its words and a path on this site. */
+const link = z.object({ label: z.string(), to: z.string() });
+
 export const site = defineCollection({
 	name: "site",
 	directory: "content/settings",
 	include: "**/site.yaml",
 	parser: "yaml",
 	schema: z.object({
-		nav: z.array(z.object({ label: z.string(), to: z.string() })),
+		name: z.string(),
+		description: optionalString(),
+		image: optionalString(),
+		twitter: optionalString(),
+		google_verification: optionalString(),
+		theme_color: optionalString(),
+		organization: z.object({
+			name: optionalString(),
+			url: optionalUrl(),
+			logo: optionalString(),
+			email: optionalEmail(),
+		}),
+		nav: z.array(link),
+		footer_note: optionalString(),
+		footer_links: z.array(link),
 	}),
 	transform: (doc) => ({ ...doc, locale: localeOf(doc) }),
 });
@@ -41,6 +64,7 @@ export const homePage = defineCollection({
 		hero: z.object({ title: z.string(), text: optionalString() }),
 		latest: z.object({ title: z.string(), link: z.string() }),
 		authors: z.object({ title: z.string() }),
+		...seoFields,
 	}),
 	transform: (doc) => ({ ...doc, locale: localeOf(doc) }),
 });
@@ -53,6 +77,7 @@ export const postsPage = defineCollection({
 	schema: z.object({
 		title: z.string(),
 		intro: optionalString(),
+		...seoFields,
 	}),
 	transform: (doc) => ({ ...doc, locale: localeOf(doc) }),
 });

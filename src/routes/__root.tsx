@@ -5,7 +5,6 @@ import {
 	Scripts,
 } from "@tanstack/react-router";
 import { NotFound } from "#/components/NotFound";
-import { siteName } from "#/libs/site";
 import appCss from "../styles.css?url";
 
 interface MyRouterContext {
@@ -17,11 +16,11 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 		meta: [
 			{ charSet: "utf-8" },
 			{ name: "viewport", content: "width=device-width, initial-scale=1" },
-			{ title: siteName },
 		],
 		links: [
 			{ rel: "stylesheet", href: appCss },
 			{ rel: "icon", type: "image/svg+xml", href: "/app-icon.svg" },
+			{ rel: "manifest", href: "/site.webmanifest" },
 		],
 	}),
 	shellComponent: RootDocument,

@@ -1,6 +1,27 @@
 # What every page shares. Edited in the CMS under Settings.
+name: Jamstack blog
+description: Notes, guides, and stories, written in Markdown and published from the CMS.
+# The picture a link to the site shows when a page has none of its own.
+image: ''
+# The site's handle on X, with its @; empty for none.
+twitter: ''
+# The code Google Search Console gives to prove the site is yours.
+google_verification: ''
+theme_color: ''
+# Who publishes the site, for search engines; all optional.
+organization:
+  name: ''
+  url: ''
+  logo: ''
+  email: ''
 nav:
   - label: Home
     to: /
   - label: Posts
     to: /posts
+footer_note: ''
+footer_links:
+  - label: Privacy
+    to: /page/privacy
+  - label: Terms
+    to: /page/terms

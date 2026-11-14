@@ -5,6 +5,10 @@ date: 2026-10-22T00:00:00.000Z
 author: jane-doe
 cover: ''
 draft: false
+featured: false
+seo_title: ''
+seo_description: ''
+og_image: ''
 ---
 
 Welcome! This post lives in `content/posts/hello-world.md`. Edit it here or in the CMS at `/admin`.

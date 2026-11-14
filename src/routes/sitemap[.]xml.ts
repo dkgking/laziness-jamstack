@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { allPosts } from "content-collections";
+import { allPosts, allTextPages } from "content-collections";
 import { type Locale, locales } from "#/libs/locales";
 import { type SitemapEntry, sitemapXml } from "#/libs/seo";
 
@@ -18,11 +18,23 @@ export const Route = createFileRoute("/sitemap.xml")({
 						post.locale,
 					]);
 				}
+				const pageLocales = new Map<string, Locale[]>();
+				for (const page of allTextPages) {
+					pageLocales.set(page.slug, [
+						...(pageLocales.get(page.slug) ?? []),
+						page.locale,
+					]);
+				}
+				// Routes: sitemapXml writes each one's public address (src/libs/rewrite.ts).
 				const entries: SitemapEntry[] = [
 					{ path: "/", locales: allLocales },
 					{ path: "/posts", locales: allLocales },
 					...[...postLocales].map(([slug, written]) => ({
 						path: `/posts/${slug}`,
+						locales: written,
+					})),
+					...[...pageLocales].map(([slug, written]) => ({
+						path: `/page/${slug}`,
 						locales: written,
 					})),
 				];
