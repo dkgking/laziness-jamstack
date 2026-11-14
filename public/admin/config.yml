@@ -26,6 +26,62 @@ slug:
   timezone: utc
 
 collections:
+  # Each page's words, one file per page: content/pages/<page>.yaml. A new
+  # page adds an entry here, its schema in src/content/pages.ts, and its file.
+  - name: "pages"
+    label: "Pages"
+    icon: "web"
+    description: "The words of each page: content/pages/<page>.yaml"
+    editor:
+      preview: false
+    files:
+      - name: "home"
+        label: "Home"
+        file: "content/pages/home.yaml"
+        fields:
+          - label: "Hero"
+            name: "hero"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Text", name: "text", widget: "text", required: false }
+          - label: "Latest posts"
+            name: "latest"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Link label", name: "link", widget: "string" }
+          - label: "Authors"
+            name: "authors"
+            widget: "object"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+      - name: "posts"
+        label: "Posts"
+        file: "content/pages/posts.yaml"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Intro", name: "intro", widget: "text", required: false }
+
+  - name: "settings"
+    label: "Settings"
+    icon: "settings"
+    description: "What every page shares: content/settings/site.yaml"
+    editor:
+      preview: false
+    files:
+      - name: "site"
+        label: "Site"
+        file: "content/settings/site.yaml"
+        fields:
+          - label: "Navigation"
+            name: "nav"
+            widget: "list"
+            summary: "{{label}}"
+            fields:
+              - { label: "Label", name: "label", widget: "string" }
+              - { label: "Path", name: "to", widget: "string", hint: "A path on this site, e.g. /posts" }
+
   - name: "authors"
     label: "Authors"
     icon: "person"

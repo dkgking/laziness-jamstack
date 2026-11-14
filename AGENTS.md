@@ -48,13 +48,17 @@ The Hello World post, the Jane Doe author, and the demo home page text only show
 
 ```
 content/                      # CMS-managed data
+  pages/<page>.yaml           # each page's words (home.yaml, posts.yaml); pages/<locale>/<page>.yaml with several languages
+  settings/site.yaml          # what every page shares: the navigation
   authors/<slug>.yaml
   posts/<slug>.md             # posts/<locale>/<slug>.md once there are several languages
 content-collections.ts        # registers collections
 src/
   content/                    # collection schemas (zod) + transforms; run at build time, outside Vite
+    pages.ts                  # one schema per page file and for settings/site.yaml
     rehype-youtube.ts         # the CMS's YouTube shortcode → embed
   server/                     # server functions over the collections (run at build time, saved as JSON)
+    pages.ts                  # getSite, getHomePage, getPostsPage: a page's words in its locale
     static.ts                 # the middleware every server function ends with
   routes/
     __root.tsx                # html shell, head
@@ -80,14 +84,15 @@ Short rule files in `.claude/rules/`: `routing.md`, `content.md`, `i18n.md`, `st
 
 - Pages under `src/routes/{-$locale}/`, linked with `LocalizedLink`; a new page must be reached by a link (or listed in `pages` in `vite.config.ts`) to be prerendered.
 - Pages read content only through server functions in `src/server/` that end with `.middleware(staticMiddleware)`; never import `content-collections` in a component or route.
-- A collection is defined twice, and both must match: its zod schema in `src/content/<name>.ts` and its entry in `public/admin/config.yml`.
+- **The site's words live in content files, never in TSX**: a page's in `content/pages/<page>.yaml`, shared ones in `content/settings/site.yaml`. A new page or section means its YAML, its schema in `src/content/pages.ts`, and its entry in `public/admin/config.yml`.
+- A collection is defined twice, and both must match: its zod schema in `src/content/<name>.ts` and its entry in `public/admin/config.yml` (`bun run validate:cms` compares their fields).
 - Nothing runs on a server after the build: no API routes, form handlers, cookies, auth, or secrets (everything in the build is public).
-- Every visible string through `i18n._()`; dates and numbers through `#/libs/intl`.
+- Only the interface's own words (404, errors, small labels) go through `i18n._()`; text written straight into JSX fails `bun run check`. Dates and numbers through `#/libs/intl`.
 - `src/routeTree.gen.ts` is generated: never edit it.
 
 ## Languages
 
-The site is English only. When the user asks for other languages (e.g. "make the site English and Vietnamese"), follow `.claude/skills/add-locale/SKILL.md` and translate every catalog and post. Otherwise keep one locale and write UI text in English through Lingui as usual.
+The site is English only. When the user asks for other languages (e.g. "make the site English and Vietnamese"), follow `.claude/skills/add-locale/SKILL.md` and translate every catalog, page file, and post. Otherwise keep one locale and write UI text in English through Lingui as usual.
 
 ## CMS
 

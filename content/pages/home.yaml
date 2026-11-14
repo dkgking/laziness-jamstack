@@ -1,0 +1,8 @@
+hero:
+  title: Jamstack blog
+  text: Notes, guides, and stories, written in Markdown and published from the CMS.
+latest:
+  title: Latest posts
+  link: All posts
+authors:
+  title: Written by

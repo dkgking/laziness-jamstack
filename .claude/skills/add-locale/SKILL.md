@@ -25,6 +25,14 @@ The default locale (`en`) has no URL prefix and its catalog is the Lingui source
    git mv content/posts/*.md content/posts/en/ 2>/dev/null || mv content/posts/*.md content/posts/en/
    ```
    For each slug add `content/posts/vi/<slug>.md`: copy the `en` file, translate `title`, `summary` and the body, keep `date`, `author`, `cover` and `draft` identical. A missing translation falls back to `en`.
+
+   The pages' words and the shared settings move the same way, one folder per locale:
+   ```bash
+   mkdir -p content/pages/en content/pages/vi content/settings/en content/settings/vi
+   mv content/pages/*.yaml content/pages/en/
+   mv content/settings/*.yaml content/settings/en/
+   ```
+   For each file add its `vi` copy (`content/pages/vi/home.yaml`, `content/settings/vi/site.yaml`): the same keys, every text translated, paths such as a nav item's `to` kept as they are. A missing file falls back to `en`.
 5. **CMS** (`public/admin/config.yml`): add the i18n block after `logo`, and mark the translated collection and its fields:
    ```yaml
    i18n:
@@ -33,17 +41,19 @@ The default locale (`en`) has no URL prefix and its catalog is the Lingui source
      default_locale: en
    ```
    In the `posts` collection add `i18n: true`; on the fields, `i18n: true` for text that is translated (`title`, `summary`, `body`) and `i18n: duplicate` for the rest (`date`, `author`, `cover`, `draft`). Set its description to `content/posts/<locale>/<slug>.md`.
+
+   In the `pages` and `settings` collections (file collections), add `i18n: true` to the collection and to each file, put `{{locale}}` in each file's path (`file: "content/pages/{{locale}}/home.yaml"`, `file: "content/settings/{{locale}}/site.yaml"`), and mark the fields: `i18n: true` for every text (on an `object` or `list` field and on the fields inside it), `i18n: duplicate` for what is the same in every language (a nav item's `to`, a picture).
 6. Nothing else: the prerender seeds one page per locale from `src/libs/locales.ts` (`vite.config.ts`), hreflang links list every locale; `sitemap.xml` lists each post only in the locales it is written in, and a page that falls back to `en` gets a canonical link to the `en` page.
 
 ## Add another locale later (example: `fr`)
 
-Steps 1–3, add `fr` to `i18n.locales` in `config.yml`, and add `content/posts/fr/<slug>.md` for the existing slugs.
+Steps 1–3, add `fr` to `i18n.locales` in `config.yml`, and add `content/posts/fr/<slug>.md` for the existing slugs, `content/pages/fr/<page>.yaml` for every page, and `content/settings/fr/site.yaml`.
 
 ## Remove a locale (example: `vi`)
 
 1. Remove it from `src/libs/locales.ts`, `lingui.config.ts` and `i18n.locales` in `public/admin/config.yml`.
-2. Delete `src/locales/vi.json` and `content/posts/vi/`.
-3. Back to English only: move `content/posts/en/*.md` to `content/posts/`, delete the `i18n` block and every `i18n:` key in `config.yml`.
+2. Delete `src/locales/vi.json`, `content/posts/vi/`, `content/pages/vi/`, and `content/settings/vi/`.
+3. Back to English only: move `content/posts/en/*.md` to `content/posts/`, `content/pages/en/*.yaml` to `content/pages/`, and `content/settings/en/*.yaml` to `content/settings/`; delete the `i18n` block and every `i18n:` key in `config.yml`, and take `{{locale}}/` out of the `file` paths.
 4. `grep -rn '"vi"\|/vi/' src content public` to catch leftovers.
 
 A post left in a folder for a removed locale makes the build fail on purpose (`parseLocalePath` rejects unknown locales).

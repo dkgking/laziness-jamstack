@@ -1,0 +1,6 @@
+# What every page shares. Edited in the CMS under Settings.
+nav:
+  - label: Home
+    to: /
+  - label: Posts
+    to: /posts

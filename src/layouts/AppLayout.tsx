@@ -1,29 +1,29 @@
-import type { MessageDescriptor } from "@lingui/core";
-import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
+import { useMatch } from "@tanstack/react-router";
 import type { PropsWithChildren } from "react";
 import { type Locale, LocalizedLink, locales, useLocale } from "#/libs/i18n";
 
-const navItems = [
-	{ to: "/", label: msg({ id: "Home" }) },
-	{ to: "/posts", label: msg({ id: "Posts" }) },
-] satisfies { to: string; label: MessageDescriptor }[];
-
 export function AppLayout({ children }: PropsWithChildren) {
-	const { i18n } = useLingui();
+	// content/settings/site.yaml, loaded by the locale route; absent on the
+	// root's not-found page (an unknown locale), which then shows no links.
+	const site = useMatch({
+		from: "/{-$locale}",
+		shouldThrow: false,
+		select: (match) => match.loaderData,
+	});
 
 	return (
 		<div className="flex min-h-screen flex-col bg-white text-slate-900">
 			<header className="border-b border-slate-200">
 				<div className="mx-auto flex w-full max-w-5xl items-center justify-between gap-4 px-4 py-4">
 					<nav className="flex items-center gap-4 text-sm font-medium">
-						{navItems.map((item) => (
+						{site?.nav.map((item) => (
 							<LocalizedLink
 								key={item.to}
 								to={item.to}
 								className="hover:text-slate-600"
 							>
-								{i18n._(item.label)}
+								{item.label}
 							</LocalizedLink>
 						))}
 					</nav>

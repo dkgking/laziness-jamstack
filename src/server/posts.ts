@@ -2,15 +2,12 @@ import { notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { allPosts } from "content-collections";
 import { z } from "zod";
-import { defaultLocale, isLocale, type Locale } from "#/libs/locales";
+import { defaultLocale, type Locale } from "#/libs/locales";
+import { localeSchema } from "./locale";
 import { staticMiddleware } from "./static";
 
 // Content stays on the server: pages receive only what they render, so the
 // collections do not grow the client bundle.
-
-const localeSchema = z.custom<Locale>(
-	(value) => typeof value === "string" && isLocale(value),
-);
 
 type Post = (typeof allPosts)[number];
 

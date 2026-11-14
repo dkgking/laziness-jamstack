@@ -1,5 +1,16 @@
 # Content
 
+## The site's words live in content files
+
+- Every word and picture a visitor reads as the site's content comes from a content file, never from TSX: a page's own words in `content/pages/<page>.yaml` (CMS → Pages), what every page shares (navigation, footer) in `content/settings/site.yaml` (CMS → Settings), and lists of things (posts, authors, projects) in their collections. The site's owner changes all of it in the CMS, and Web Studio's Edit tool writes these same files.
+- Lingui (`i18n._()`) keeps only the interface's own words: the 404 and error pages, form messages, labels such as "Back to home" and "Language". When in doubt, it is content.
+- A page's section is an object (`hero: { title, text }`) or a list of objects (`features: [{ title, body }]`), so each card on the page is one list item an editor changes on its own. Keep one field per piece of text; never join two fields into one string, and never split one sentence over several fields.
+- A new page or section is written in three places that must match: the YAML file, its schema in `src/content/pages.ts` (registered in `content-collections.ts`), and its `files` entry in `public/admin/config.yml`. `bun run validate:cms` fails when the schema and the CMS name different fields.
+- `.laziness/cms.json` tells Web Studio where the CMS config is (`config`, and `url`, the address the site serves it at) and which folders hold content (`content`). Keep it in step when a collection's folder or the CMS's `media_folder` moves: Studio's Edit tool writes only inside those folders.
+- Text written straight into JSX in `src/routes`, `src/components`, or `src/layouts` fails `bun run check` (Biome's `noJsxLiterals`). Do not get round it with `{"text"}`: put the words in the page's file.
+
+## Reading content
+
 - Pages read content only through server functions in `src/server/`, called from a route `loader`. Never import `content-collections` in components or routes (it would ship the data to the browser).
 - Every server function ends with `.middleware(staticMiddleware)` (`src/server/static.ts`), so its result is saved as JSON at build time.
 - Return only the fields a page renders (strip `_meta`, raw `content`).

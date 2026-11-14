@@ -25,7 +25,9 @@ export function PostList({ posts }: { posts: readonly PostSummary[] }) {
 						{post.title}
 					</LocalizedLink>
 					<p className="mt-1 text-sm text-slate-500">
-						{formatDate(i18n.locale, post.date)} · {post.author.name}
+						{formatDate(i18n.locale, post.date)}
+						{" · "}
+						{post.author.name}
 						{post.draft && (
 							<span className="ml-2 rounded bg-amber-100 px-1.5 text-amber-800">
 								{i18n._("Draft")}

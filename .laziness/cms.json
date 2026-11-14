@@ -1,0 +1,5 @@
+{
+	"config": "public/admin/config.yml",
+	"url": "/admin/config.yml",
+	"content": ["content", "public/uploads"]
+}

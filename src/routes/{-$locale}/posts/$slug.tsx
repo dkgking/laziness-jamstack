@@ -41,12 +41,15 @@ function PostPage() {
 					to="/posts"
 					className="text-sm text-slate-500 hover:text-slate-700"
 				>
-					← {i18n._("All posts")}
+					{"← "}
+					{i18n._("All posts")}
 				</LocalizedLink>
 
 				<h1 className="mt-4 text-4xl font-bold">{post.title}</h1>
 				<p className="mt-2 text-sm text-slate-500">
-					{formatDate(i18n.locale, post.date)} · {post.author.name}
+					{formatDate(i18n.locale, post.date)}
+					{" · "}
+					{post.author.name}
 				</p>
 
 				{post.cover && (

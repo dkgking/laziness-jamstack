@@ -40,5 +40,21 @@
 		"formatter": {
 			"quoteStyle": "double"
 		}
-	}
+	},
+	"overrides": [
+		{
+			"includes": [
+				"**/src/routes/**",
+				"**/src/components/**",
+				"**/src/layouts/**"
+			],
+			"linter": {
+				"rules": {
+					"style": {
+						"noJsxLiterals": "error"
+					}
+				}
+			}
+		}
+	]
 }

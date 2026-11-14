@@ -1,32 +1,28 @@
-import { msg } from "@lingui/core/macro";
 import { useLingui } from "@lingui/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { PostList } from "#/components/PostList";
 import { AppLayout } from "#/layouts/AppLayout";
 import { LocalizedLink } from "#/libs/i18n";
 import { seo } from "#/libs/seo";
-import { siteName } from "#/libs/site";
 import { listAuthors } from "#/server/authors";
+import { getHomePage } from "#/server/pages";
 import { listPosts } from "#/server/posts";
 
 const LATEST_POSTS = 3;
 
-const description = msg({
-	id: "Notes, guides, and stories, written in Markdown and published from the CMS.",
-});
-
 export const Route = createFileRoute("/{-$locale}/")({
 	loader: async ({ context }) => {
-		const [posts, authors] = await Promise.all([
+		const [page, posts, authors] = await Promise.all([
+			getHomePage({ data: { locale: context.locale } }),
 			listPosts({ data: { locale: context.locale } }),
 			listAuthors(),
 		]);
-		return { latest: posts.slice(0, LATEST_POSTS), authors };
+		return { page, latest: posts.slice(0, LATEST_POSTS), authors };
 	},
-	head: ({ match }) => ({
+	head: ({ match, loaderData }) => ({
 		meta: seo({
-			title: siteName,
-			description: match.context.i18n._(description),
+			title: loaderData?.page.hero.title ?? "",
+			description: loaderData?.page.hero.text,
 			path: match.pathname,
 		}),
 	}),
@@ -34,27 +30,31 @@ export const Route = createFileRoute("/{-$locale}/")({
 });
 
 function Home() {
-	const { latest, authors } = Route.useLoaderData();
-	const { i18n } = useLingui();
+	const { page, latest, authors } = Route.useLoaderData();
 
 	return (
 		<AppLayout>
 			<div className="w-full">
 				<section className="py-12">
-					<h1 className="text-5xl font-bold tracking-tight">{siteName}</h1>
-					<p className="mt-4 max-w-2xl text-lg text-slate-600">
-						{i18n._(description)}
-					</p>
+					<h1 className="text-5xl font-bold tracking-tight">
+						{page.hero.title}
+					</h1>
+					{page.hero.text && (
+						<p className="mt-4 max-w-2xl text-lg text-slate-600">
+							{page.hero.text}
+						</p>
+					)}
 				</section>
 
 				<section>
 					<div className="mb-6 flex items-baseline justify-between gap-4">
-						<h2 className="text-2xl font-bold">{i18n._("Latest posts")}</h2>
+						<h2 className="text-2xl font-bold">{page.latest.title}</h2>
 						<LocalizedLink
 							to="/posts"
 							className="text-sm text-slate-500 hover:text-slate-700"
 						>
-							{i18n._("All posts")} →
+							{page.latest.link}
+							{" →"}
 						</LocalizedLink>
 					</div>
 					<PostList posts={latest} />
@@ -62,7 +62,7 @@ function Home() {
 
 				{authors.length > 0 && (
 					<section className="mt-12">
-						<h2 className="mb-6 text-2xl font-bold">{i18n._("Written by")}</h2>
+						<h2 className="mb-6 text-2xl font-bold">{page.authors.title}</h2>
 						<ul className="grid gap-4 sm:grid-cols-2">
 							{authors.map((author) => (
 								<li
