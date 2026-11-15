@@ -1,7 +1,9 @@
 // Two checks of public/admin/config.yml:
 // 1. it is a valid Sveltia CMS config (schema.json);
 // 2. every content collection (content-collections.ts) and its CMS collection
-//    name the same fields, so what an editor saves is what the build reads.
+//    name the same fields, so what an editor saves is what the build reads;
+// 3. every group an editor may leave out (`widget: object`, `required: false`)
+//    is one the schema takes as `null`, which is how the CMS saves it.
 import fs from "node:fs";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
@@ -59,6 +61,24 @@ const cmsFields = (fields, prefix = "") =>
 		return [name, ...cmsFields(field.fields, name)];
 	});
 
+/** The CMS's optional groups, by the same spelling as `cmsFields` (`prices`, `hero.badge`, `cards[].link`). */
+const optionalGroups = (fields, prefix = "") =>
+	(fields ?? []).flatMap((field) => {
+		const list = field.widget === "list" && field.fields ? "[]" : "";
+		const name = `${prefix ? `${prefix}.` : ""}${field.name}${list}`;
+		const own =
+			field.widget === "object" && field.required === false ? [name] : [];
+		return own.concat(optionalGroups(field.fields, name));
+	});
+
+/** The zod schema of a field named as `cmsFields` spells it (undefined: the schema has none). */
+const schemaAt = (type, name) =>
+	name.split(".").reduce((current, part) => {
+		const key = part.replace("[]", "");
+		const child = bare(current)?.shape?.[key];
+		return part.endsWith("[]") ? bare(child)?.def?.element : child;
+	}, type);
+
 /** A CMS file's path without its language part (`content/pages/{{locale}}/home.yaml`). */
 const plainPath = (file) => file.replace("{{locale}}/", "");
 
@@ -106,6 +126,13 @@ for (const collection of contentConfig.content) {
 			problems.push(
 				`"${name}" is in the schema of "${collection.name}" but not in the CMS collection "${entry.label}"`,
 			);
+	for (const name of optionalGroups(entry.fields)) {
+		const group = schemaAt(collection.schema, name);
+		if (group && !group.safeParse(null).success)
+			problems.push(
+				`"${name}" may be left out in the CMS collection "${entry.label}" (required: false), and is then saved as null, which the schema of "${collection.name}" refuses: use optionalObject() from src/content/helpers.ts`,
+			);
+	}
 	for (const name of edited)
 		if (!build.has(name))
 			problems.push(

@@ -14,6 +14,18 @@ export const optionalEmail = () =>
 	z.email().or(z.literal("")).optional().transform(emptyToUndefined);
 
 /**
+ * A group of fields an editor may leave out (`widget: object` with
+ * `required: false`). Sveltia CMS saves one that was not added as `null`,
+ * and a file written before the field existed has no key at all: both read
+ * as "not set".
+ */
+export const optionalObject = <Shape extends z.ZodRawShape>(shape: Shape) =>
+	z
+		.object(shape)
+		.nullish()
+		.transform((value) => value ?? undefined);
+
+/**
  * What a page may say to search engines and link previews in place of its
  * own title and first words. Kept as plain fields beside the page's others
  * (never an object): Web Studio's Edit form writes plain fields only.

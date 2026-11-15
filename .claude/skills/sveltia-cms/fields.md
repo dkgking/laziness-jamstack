@@ -30,6 +30,7 @@ Helpers come from `src/content/helpers.ts`.
 | `{ widget: list, field: { widget: string, name: tag } }` | `["a", "b"]` | `z.array(z.string()).default([])` |
 | `{ widget: list, fields: [...] }` | `[{ … }, …]` | `z.array(z.object({ … })).default([])` |
 | `{ widget: object, fields: [...] }` | `{ … }` | `z.object({ … })` |
+| `{ widget: object, required: false, fields: [...] }` | `{ … }`, or `null` when the editor did not add it | `optionalObject({ … })`, never `z.object({ … }).optional()`: `.optional()` refuses the `null` and the build fails |
 | `{ widget: color }` | `"#ff0000"` | `z.string().regex(/^#[0-9a-f]{6}$/i)` |
 | `{ widget: hidden, default: … }` | the default | the matching type |
 | `{ widget: uuid }` | `"0f8f…"` | `z.uuid()` |
