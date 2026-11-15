@@ -1,6 +1,6 @@
 # Sveltia field ↔ zod mapping
 
-Sveltia 0.213 field types: `boolean`, `code`, `color`, `compute`, `datetime`, `file`, `hidden`, `image`, `keyvalue`, `list`, `map`, `markdown`, `number`, `object`, `relation`, `richtext`, `select`, `string`, `text`, `uuid`.
+Sveltia 0.266 field types: `boolean`, `code`, `color`, `compute`, `datetime`, `file`, `hidden`, `image`, `keyvalue`, `list`, `map`, `markdown`, `number`, `object`, `relation`, `richtext`, `select`, `string`, `text`, `uuid`.
 
 Every visible field also accepts `label`, `hint`, `comment`, `required` (default `true`), `readonly`, `preview` and `pattern: [regex, message]`. Translated collections add `i18n: true | duplicate | false` per field.
 

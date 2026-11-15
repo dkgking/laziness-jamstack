@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms@0.213.5/schema/sveltia-cms.json
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms@0.266.0/schema/sveltia-cms.json
 backend:
   name: github
   repo: OWNER/REPO # TODO: set your GitHub repository (owner/repo)
