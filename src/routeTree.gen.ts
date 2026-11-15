@@ -9,12 +9,25 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
+import { Route as SiteDotwebmanifestRouteImport } from './routes/site[.]webmanifest'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as Char123LocaleChar125RouteRouteImport } from './routes/{-$locale}/route'
 import { Route as Char123LocaleChar125IndexRouteImport } from './routes/{-$locale}/index'
+import { Route as Char123LocaleChar125PageSlugRouteImport } from './routes/{-$locale}/page/$slug'
 import { Route as Char123LocaleChar125PostsIndexRouteImport } from './routes/{-$locale}/posts/index'
 import { Route as Char123LocaleChar125PostsSlugRouteImport } from './routes/{-$locale}/posts/$slug'
 
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SiteDotwebmanifestRoute = SiteDotwebmanifestRouteImport.update({
+  id: '/site.webmanifest',
+  path: '/site.webmanifest',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -32,6 +45,12 @@ const Char123LocaleChar125IndexRoute =
     path: '/',
     getParentRoute: () => Char123LocaleChar125RouteRoute,
   } as any)
+const Char123LocaleChar125PageSlugRoute =
+  Char123LocaleChar125PageSlugRouteImport.update({
+    id: '/page/$slug',
+    path: '/page/$slug',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
 const Char123LocaleChar125PostsIndexRoute =
   Char123LocaleChar125PostsIndexRouteImport.update({
     id: '/posts/',
@@ -47,22 +66,31 @@ const Char123LocaleChar125PostsSlugRoute =
 
 export interface FileRoutesByFullPath {
   '/{-$locale}': typeof Char123LocaleChar125RouteRouteWithChildren
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/site.webmanifest': typeof SiteDotwebmanifestRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/{-$locale}/': typeof Char123LocaleChar125IndexRoute
+  '/{-$locale}/page/$slug': typeof Char123LocaleChar125PageSlugRoute
   '/{-$locale}/posts/$slug': typeof Char123LocaleChar125PostsSlugRoute
   '/{-$locale}/posts/': typeof Char123LocaleChar125PostsIndexRoute
 }
 export interface FileRoutesByTo {
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/site.webmanifest': typeof SiteDotwebmanifestRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/{-$locale}': typeof Char123LocaleChar125IndexRoute
+  '/{-$locale}/page/$slug': typeof Char123LocaleChar125PageSlugRoute
   '/{-$locale}/posts/$slug': typeof Char123LocaleChar125PostsSlugRoute
   '/{-$locale}/posts': typeof Char123LocaleChar125PostsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/{-$locale}': typeof Char123LocaleChar125RouteRouteWithChildren
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/site.webmanifest': typeof SiteDotwebmanifestRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/{-$locale}/': typeof Char123LocaleChar125IndexRoute
+  '/{-$locale}/page/$slug': typeof Char123LocaleChar125PageSlugRoute
   '/{-$locale}/posts/$slug': typeof Char123LocaleChar125PostsSlugRoute
   '/{-$locale}/posts/': typeof Char123LocaleChar125PostsIndexRoute
 }
@@ -70,32 +98,57 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/{-$locale}'
+    | '/robots.txt'
+    | '/site.webmanifest'
     | '/sitemap.xml'
     | '/{-$locale}/'
+    | '/{-$locale}/page/$slug'
     | '/{-$locale}/posts/$slug'
     | '/{-$locale}/posts/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/robots.txt'
+    | '/site.webmanifest'
     | '/sitemap.xml'
     | '/{-$locale}'
+    | '/{-$locale}/page/$slug'
     | '/{-$locale}/posts/$slug'
     | '/{-$locale}/posts'
   id:
     | '__root__'
     | '/{-$locale}'
+    | '/robots.txt'
+    | '/site.webmanifest'
     | '/sitemap.xml'
     | '/{-$locale}/'
+    | '/{-$locale}/page/$slug'
     | '/{-$locale}/posts/$slug'
     | '/{-$locale}/posts/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   Char123LocaleChar125RouteRoute: typeof Char123LocaleChar125RouteRouteWithChildren
+  RobotsDottxtRoute: typeof RobotsDottxtRoute
+  SiteDotwebmanifestRoute: typeof SiteDotwebmanifestRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/site.webmanifest': {
+      id: '/site.webmanifest'
+      path: '/site.webmanifest'
+      fullPath: '/site.webmanifest'
+      preLoaderRoute: typeof SiteDotwebmanifestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -117,6 +170,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char123LocaleChar125IndexRouteImport
       parentRoute: typeof Char123LocaleChar125RouteRoute
     }
+    '/{-$locale}/page/$slug': {
+      id: '/{-$locale}/page/$slug'
+      path: '/page/$slug'
+      fullPath: '/{-$locale}/page/$slug'
+      preLoaderRoute: typeof Char123LocaleChar125PageSlugRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
     '/{-$locale}/posts/': {
       id: '/{-$locale}/posts/'
       path: '/posts'
@@ -136,6 +196,7 @@ declare module '@tanstack/react-router' {
 
 interface Char123LocaleChar125RouteRouteChildren {
   Char123LocaleChar125IndexRoute: typeof Char123LocaleChar125IndexRoute
+  Char123LocaleChar125PageSlugRoute: typeof Char123LocaleChar125PageSlugRoute
   Char123LocaleChar125PostsSlugRoute: typeof Char123LocaleChar125PostsSlugRoute
   Char123LocaleChar125PostsIndexRoute: typeof Char123LocaleChar125PostsIndexRoute
 }
@@ -143,6 +204,7 @@ interface Char123LocaleChar125RouteRouteChildren {
 const Char123LocaleChar125RouteRouteChildren: Char123LocaleChar125RouteRouteChildren =
   {
     Char123LocaleChar125IndexRoute: Char123LocaleChar125IndexRoute,
+    Char123LocaleChar125PageSlugRoute: Char123LocaleChar125PageSlugRoute,
     Char123LocaleChar125PostsSlugRoute: Char123LocaleChar125PostsSlugRoute,
     Char123LocaleChar125PostsIndexRoute: Char123LocaleChar125PostsIndexRoute,
   }
@@ -154,6 +216,8 @@ const Char123LocaleChar125RouteRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   Char123LocaleChar125RouteRoute: Char123LocaleChar125RouteRouteWithChildren,
+  RobotsDottxtRoute: RobotsDottxtRoute,
+  SiteDotwebmanifestRoute: SiteDotwebmanifestRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport

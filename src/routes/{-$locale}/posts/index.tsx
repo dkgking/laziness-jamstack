@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PostList } from "#/components/PostList";
 import { AppLayout } from "#/layouts/AppLayout";
-import { seo } from "#/libs/seo";
+import { canonicalLink, seo } from "#/libs/seo";
+import { siteOf } from "#/libs/site-match";
 import { getPostsPage } from "#/server/pages";
 import { listPosts } from "#/server/posts";
 
@@ -13,12 +14,14 @@ export const Route = createFileRoute("/{-$locale}/posts/")({
 		]);
 		return { page, posts };
 	},
-	head: ({ match, loaderData }) => ({
+	head: ({ match, matches, loaderData }) => ({
 		meta: seo({
-			title: loaderData?.page.title ?? "",
-			description: loaderData?.page.intro,
+			title: loaderData?.page.seo_title ?? loaderData?.page.title ?? "",
+			description: loaderData?.page.seo_description ?? loaderData?.page.intro,
+			image: siteOf(matches)?.image,
 			path: match.pathname,
 		}),
+		links: [canonicalLink(match.context.locale, "/posts")],
 	}),
 	component: PostsPage,
 });

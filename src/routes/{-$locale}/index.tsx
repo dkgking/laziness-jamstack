@@ -3,7 +3,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PostList } from "#/components/PostList";
 import { AppLayout } from "#/layouts/AppLayout";
 import { LocalizedLink } from "#/libs/i18n";
-import { seo } from "#/libs/seo";
+import { canonicalLink, seo } from "#/libs/seo";
+import { siteOf } from "#/libs/site-match";
 import { listAuthors } from "#/server/authors";
 import { getHomePage } from "#/server/pages";
 import { listPosts } from "#/server/posts";
@@ -17,15 +18,28 @@ export const Route = createFileRoute("/{-$locale}/")({
 			listPosts({ data: { locale: context.locale } }),
 			listAuthors(),
 		]);
-		return { page, latest: posts.slice(0, LATEST_POSTS), authors };
+		// Featured posts first, each group newest first.
+		const latest = [
+			...posts.filter((post) => post.featured),
+			...posts.filter((post) => !post.featured),
+		].slice(0, LATEST_POSTS);
+		return { page, latest, authors };
 	},
-	head: ({ match, loaderData }) => ({
-		meta: seo({
-			title: loaderData?.page.hero.title ?? "",
-			description: loaderData?.page.hero.text,
-			path: match.pathname,
-		}),
-	}),
+	head: ({ match, matches, loaderData }) => {
+		const site = siteOf(matches);
+		return {
+			meta: seo({
+				title: loaderData?.page.seo_title ?? loaderData?.page.hero.title ?? "",
+				description:
+					loaderData?.page.seo_description ??
+					loaderData?.page.hero.text ??
+					site?.description,
+				image: site?.image,
+				path: match.pathname,
+			}),
+			links: [canonicalLink(match.context.locale, "/")],
+		};
+	},
 	component: Home,
 });
 

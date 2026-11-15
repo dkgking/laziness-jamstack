@@ -16,6 +16,15 @@ export function ErrorPage({ error }: ErrorComponentProps) {
 	useEffect(() => {
 		console.error(error);
 	}, [error]);
+	// At build time this page is the answer to a page that failed to
+	// prerender, and the build only says "Failed to fetch <path>: Internal
+	// Server Error": the reason is printed here, where the build log shows it.
+	if (import.meta.env.SSR) {
+		console.error(
+			`\n[prerender] ${router.state.location.pathname} failed:`,
+			error,
+		);
+	}
 
 	return (
 		<AppLayout>

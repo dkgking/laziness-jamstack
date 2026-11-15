@@ -32,6 +32,8 @@ The default locale (`en`) has no URL prefix and its catalog is the Lingui source
    mv content/pages/*.yaml content/pages/en/
    mv content/settings/*.yaml content/settings/en/
    ```
+   Text pages move like posts: `content/text-pages/*.md` into `content/text-pages/en/`, with a `vi` copy of each under the same file name.
+
    For each file add its `vi` copy (`content/pages/vi/home.yaml`, `content/settings/vi/site.yaml`): the same keys, every text translated, paths such as a nav item's `to` kept as they are. A missing file falls back to `en`.
 5. **CMS** (`public/admin/config.yml`): add the i18n block after `logo`, and mark the translated collection and its fields:
    ```yaml
@@ -40,10 +42,11 @@ The default locale (`en`) has no URL prefix and its catalog is the Lingui source
      locales: [en, vi]
      default_locale: en
    ```
-   In the `posts` collection add `i18n: true`; on the fields, `i18n: true` for text that is translated (`title`, `summary`, `body`) and `i18n: duplicate` for the rest (`date`, `author`, `cover`, `draft`). Set its description to `content/posts/<locale>/<slug>.md`.
+   The `text-pages` collection is marked like `posts` (`i18n: true` on it and on `title`, `summary`, `seo_title`, `seo_description`, `body`; `i18n: duplicate` on `updated`). In the `posts` collection add `i18n: true`; on the fields, `i18n: true` for text that is translated (`title`, `summary`, `seo_title`, `seo_description`, `body`) and `i18n: duplicate` for the rest (`date`, `author`, `cover`, `draft`, `featured`, `og_image`). Set its description to `content/posts/<locale>/<slug>.md`.
 
    In the `pages` and `settings` collections (file collections), add `i18n: true` to the collection and to each file, put `{{locale}}` in each file's path (`file: "content/pages/{{locale}}/home.yaml"`, `file: "content/settings/{{locale}}/site.yaml"`), and mark the fields: `i18n: true` for every text (on an `object` or `list` field and on the fields inside it), `i18n: duplicate` for what is the same in every language (a nav item's `to`, a picture).
-6. Nothing else: the prerender seeds one page per locale from `src/libs/locales.ts` (`vite.config.ts`), hreflang links list every locale; `sitemap.xml` lists each post only in the locales it is written in, and a page that falls back to `en` gets a canonical link to the `en` page.
+6. **Addresses** (only when asked for translated URLs): a section or a page can read in the language's own words (`/vi/bai-viet` for `/vi/posts`) with a rule in `src/libs/rewrite.ts`: `.claude/skills/localize-urls/SKILL.md`. An entry's own slug stays the same in every language.
+7. Nothing else: the prerender seeds one page per locale from `src/libs/locales.ts` (`vite.config.ts`), hreflang links list every locale; `sitemap.xml` lists each post only in the locales it is written in, and a page that falls back to `en` gets a canonical link to the `en` page.
 
 ## Add another locale later (example: `fr`)
 
