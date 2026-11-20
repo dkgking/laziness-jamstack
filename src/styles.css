@@ -1,10 +1,6 @@
 
 @import "tailwindcss";
 
-/* In Web Studio the package managers' cache is in the project (.cache), and
-   node_modules links into it: Tailwind must not read it for class names. */
-@source not "../.cache";
-
 * {
   box-sizing: border-box;
 }
