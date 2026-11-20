@@ -9,7 +9,7 @@ A **static** content site (blog, portfolio, marketing pages):
 - **TanStack Start** (React 19, file-based routing, React Compiler), **prerendered to HTML** at build time into `dist/client`. No server code runs after the build.
 - **Content Collections** turns `content/` (Markdown, YAML) into typed data at build time.
 - **Sveltia CMS** at `/admin` edits `content/` through GitHub.
-- **Lingui** for UI text, with the locale in the URL (`@sourceking/tanstack-lingui`). The site is **English only** until the user asks for other languages.
+- **Lingui** for UI text, with the locale in the URL (`@dkgking/lingui-start`). The site is **English only** until the user asks for other languages.
 - **Tailwind CSS v4**, **Biome**, **bun**.
 
 ## The example is not the site

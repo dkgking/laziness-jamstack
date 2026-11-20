@@ -2,7 +2,7 @@ import type { I18n } from "@lingui/core";
 import {
 	createLinguiStart,
 	type LocaleDefinition,
-} from "@sourceking/tanstack-lingui";
+} from "@dkgking/lingui-start";
 import { defaultLocale, type Locale, locales } from "./locales";
 
 export { defaultLocale, isLocale, type Locale, locales } from "./locales";

@@ -7,7 +7,7 @@ description: Add, remove or change a site language (e.g. make the site English a
 
 The site starts **English only**. Only add languages the user asks for.
 
-Locale codes must be **exactly two lowercase letters** (`vi`, `fr`, `de`). The URL prefix matcher in `@sourceking/tanstack-lingui` only accepts `/[a-z]{2}/`, so `zh-TW` or `pt-BR` will not route. If two variants of one language are needed, stop and ask.
+Locale codes must be **exactly two lowercase letters** (`vi`, `fr`, `de`). The URL prefix matcher in `@dkgking/lingui-start` only accepts `/[a-z]{2}/`, so `zh-TW` or `pt-BR` will not route. If two variants of one language are needed, stop and ask.
 
 The default locale (`en`) has no URL prefix and its catalog is the Lingui source: `/posts` is English, `/vi/posts` is Vietnamese.
 
